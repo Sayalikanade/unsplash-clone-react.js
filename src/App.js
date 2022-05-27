@@ -1,25 +1,40 @@
-import logo from './logo.svg';
+import React,{ useState } from 'react';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-
+  const [value,setValue] = useState("")
+  const [results, setResult] = useState([])
+  //ul-pL8QTrIsDxozRNdqhYMyK-_qu-5dPdjVbDNa7UgQ
+  const fetchImages = () => {
+    fetch('https://api.unsplash.com/search/photos?client_id=YOUR_ul-pL8QTrIsDxozRNdqhYMyK-_qu-5dPdjVbDNa7UgQ&query=${value}&orientation=squarish')
+  
+      .then(res => res.json())
+      .then(data => {
+        //console.log(data)
+        setResult(data.results)
+      })
+    }
+    return (
+      <div className="App">
+        <div className="mydiv">
+          <div className="gallery">
+            {
+              results.map((items) => {
+                return <img className="item" key={items.urls.regular} />
+              
+              })
+            }
+          </div>
+          <span>Search</span>
+          <input
+            style={{ width: "60" }}
+            type="text"
+            value={value}
+            onChange={(e) => setValue(e.target.value)} />
+          <button onClick={() => fetchImages()}>Send</button>
+        </div>
+      </div>
+    );
+  }
+    
 export default App;
